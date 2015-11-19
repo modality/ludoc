@@ -1,0 +1,44 @@
+width: 2.5"
+height: 3.5"
+orientation: landscape
+rows: 2
+columns: 4
+elements:
+  - type: text
+    align: left
+    column: name
+    box: 0.125" 0.125" 2.25" 0.25"
+  - type: Text
+    align: Right
+    column: COST
+    box: 0.125" 0.125" 2.25" 0.25"
+  - type: text
+    align: CENTER
+    column: Description
+    box: 0.25" 1" 2" 2"
+
+# ludoc is a command-line interface for game design
+# ludoc commands
+# - load layout and data file, specify assets directory (default .)
+# - ruler - `ludoc ruler 1 inch in points` => 72
+#
+# other layouts
+# 1"x1" tokens
+# pogs? pogs pogs pogs. pogs for faces. dog pogs
+#
+# "elements"
+# layered by order, bottom to top
+# percentile positioning (top left right bottom) and sizing (width, height)
+# background color
+# foreground color
+# align (left right center)
+# text asset and image asset
+# sane image sizing
+# - fit to dims
+# - center and crop
+# - fit and crop to dims
+# - resize to dims
+#
+# logic??
+# - (not_)equals[name:COLUMN, value:VALUE]
+# - or, and, not (all take arrays)
