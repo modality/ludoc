@@ -60,8 +60,8 @@ module Ludoc
       str * 72
     end
 
-    def to_box(boxstr)
-      box = boxstr.split(' ').map(&method(:to_pts))
+    def to_box(str)
+      box = str.split(' ').map(&method(:to_pts))
       {x: box[0], y: box[1], width: box[2], height: box[3]}
     end
 

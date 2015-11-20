@@ -1,6 +1,8 @@
 # Ludoc
 
-TODO: Write a gem description
+TODO: Should be able to do more than one page
+TODO: Should be able to do multiples of the same piece
+TODO: Should be able to draw boxes and images
 
 ## Installation
 
