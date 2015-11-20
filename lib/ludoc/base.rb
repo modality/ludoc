@@ -26,7 +26,7 @@ module Ludoc
       bail "ERROR: No input file named `#{input_file}` exists" unless File.exist? input_file
 
       begin
-        @layout = YAML.load(File.read(File.expand_path(layout_file)))
+        @layout = Ludoc::Layout.new(YAML.load(File.read(File.expand_path(layout_file))))
       rescue
         bail "ERROR: Layout `#{layout_file}` is not a valid yaml file"
       end
@@ -47,46 +47,32 @@ module Ludoc
     end
 
     def text_element(pdf, text, el)
-      box = to_box(el["box"])
       pdf.text_box text,
-                   at: [box[:x], pdf.bounds.height - box[:y]],
-                   align: el["align"].downcase.to_sym,
-                   width: box[:width],
-                   height: box[:height]
-    end
-
-    def to_pts(str)
-      str = str.chomp('"').to_f if str.is_a? String
-      str * 72
-    end
-
-    def to_box(str)
-      box = str.split(' ').map(&method(:to_pts))
-      {x: box[0], y: box[1], width: box[2], height: box[3]}
+                   at: [el.x, pdf.bounds.height - el.y],
+                   align: el.align,
+                   width: el.width,
+                   height: el.height
     end
 
     def render
-      pdf = Prawn::Document.new(page_layout: layout["orientation"].to_sym)
+      pdf = Prawn::Document.new(page_layout: layout.orientation)
 
       data_remaining = true
-      opts = {width: to_pts(layout["width"]), height: to_pts(layout["height"])}
+      opts = {width: layout.width, height: layout.height}
 
       column_names = input.shift.map(&:downcase)
 
-      layout["rows"].times do |j|
-        layout["columns"].times do |i|
-          pos = [0 + i*opts[:width], pdf.margin_box.height - j*opts[:height]]
+      layout.rows.times do |j|
+        layout.columns.times do |i|
+          pos = [0 + i*layout.width, pdf.margin_box.height - j*layout.height]
           game_piece = input.shift
           if game_piece
             pdf.bounding_box(pos, opts) do
               pdf.stroke_color 'CCCCCC'
               pdf.stroke_bounds
               pdf.float do
-                layout["elements"].each do |el|
-                  case el["type"].downcase
-                  when "text" then
-                    text_element(pdf, game_piece[column_names.index(el["column"].downcase)], el)
-                  end
+                layout.elements.each do |el|
+                  text_element(pdf, game_piece[column_names.index(el.column)], el)
                 end
               end
             end
