@@ -16,6 +16,12 @@ Usage:  ludoc [options]
   -o=output     output path for pdf file (default output is to stdout)
 ```
 
+e.g., in a clone of this repo:
+
+```
+./bin/ludoc -l=lib/layouts/playing_card.yml -i=test.csv -o=output.pdf
+```
+
 ## Layouts
 
 A layout is a YAML file specifying the format of an individual game piece and the overall format of the end result PDF.
