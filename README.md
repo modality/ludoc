@@ -24,7 +24,7 @@ e.g., in a clone of this repo:
 
 ## Layouts
 
-A layout is [a YAML file](https://github.com/modality/ludoc/blob/master/lib/layouts/playing_card.yml) specifying the format of an individual game piece and the overall format of the end result PDF.
+A layout is a YAML file ([example here](https://github.com/modality/ludoc/blob/master/lib/layouts/playing_card.yml)) specifying the format of an individual game piece and the overall format of the end result PDF.
 
 ### Document options
 * `units`: either `inches` or `points` (1 inch = 72 points)
