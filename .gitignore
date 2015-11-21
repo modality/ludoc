@@ -1,4 +1,3 @@
-vendor
 /.bundle/
 /.yardoc
 /Gemfile.lock
@@ -8,6 +7,8 @@ vendor
 /pkg/
 /spec/reports/
 /tmp/
+/vendor/
+/build/
 *.bundle
 *.so
 *.o

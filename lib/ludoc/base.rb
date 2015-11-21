@@ -11,7 +11,7 @@ MSG
 
 module Ludoc
   class Base
-    attr_accessor :layout, :input, :output_file
+    attr_accessor :layout, :input, :output_file, :pdf
 
     def initialize(args)
       bail if args.size == 0
@@ -46,7 +46,7 @@ module Ludoc
       exit 1
     end
 
-    def text_element(pdf, text, el)
+    def text_element(text, el)
       pdf.text_box text,
                    at: [el.x, pdf.bounds.height - el.y],
                    align: el.align,
@@ -54,34 +54,40 @@ module Ludoc
                    height: el.height
     end
 
-    def render
-      pdf = Prawn::Document.new(page_layout: layout.orientation)
+    def render_piece(row, col, game_piece)
+      pos = [0 + col*layout.width, pdf.margin_box.height - row*layout.height]
+      pdf.bounding_box(pos, {width: layout.width, height: layout.height}) do
+        pdf.stroke_color 'CCCCCC'
+        pdf.stroke_bounds
+        pdf.float do
+          layout.elements.each do |el|
+            text_element(game_piece.column_value(el.column), el)
+          end
+        end
+      end
+    end
 
-      data_remaining = true
-      opts = {width: layout.width, height: layout.height}
+    def render
+      @pdf = Prawn::Document.new(page_layout: layout.orientation)
 
       column_names = input.shift.map(&:downcase)
+      row = 0
+      col = 0
 
-      layout.rows.times do |j|
-        layout.columns.times do |i|
-          pos = [0 + i*layout.width, pdf.margin_box.height - j*layout.height]
-          game_piece = input.shift
-          if game_piece
-            pdf.bounding_box(pos, opts) do
-              pdf.stroke_color 'CCCCCC'
-              pdf.stroke_bounds
-              pdf.float do
-                layout.elements.each do |el|
-                  text_element(pdf, game_piece[column_names.index(el.column)], el)
-                end
-              end
-            end
-          else
-            data_remaining = false
+      while input.size > 0 do
+        game_piece = GamePiece.new(layout, column_names, input.shift)
+        game_piece.count.times do |index|
+          render_piece(row, col, game_piece)
+          col += 1
+          if col >= layout.columns
+            col = 0
+            row += 1
           end
-          break unless data_remaining
+          if row >= layout.rows && (index < game_piece.count - 1 || input.size > 0)
+            row = 0
+            pdf.start_new_page
+          end
         end
-        break unless data_remaining
       end
 
       if output_file

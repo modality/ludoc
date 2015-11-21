@@ -14,6 +14,10 @@ module Ludoc
       @orientation ||= layout["orientation"].downcase.to_sym
     end
 
+    def count_column
+      @count_column ||= layout["count_column"].downcase
+    end
+
     def width
       @width ||= coerce_to_pts(layout["width"])
     end
