@@ -9,6 +9,7 @@
 /tmp/
 /vendor/
 /build/
+/data/
 *.bundle
 *.so
 *.o
