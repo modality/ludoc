@@ -1,29 +1,27 @@
 module Ludoc
   class Element
-    attr_accessor :element, :layout
-
-    def initialize(element, layout)
+    def initialize(element, units)
       @element = element
-      @layout = layout
+      @units = units
     end
 
     def type
-      element["type"].downcase
+      @element["type"].downcase
     end
 
     def column
-      element["column"].downcase
+      @element["column"].downcase
     end
 
     def align
-      element["align"].downcase.to_sym
+      @element["align"].downcase.to_sym
     end
 
     def box
       return @box if @box
-      tmp = element["box"].split(' ')
-      tmp = tmp.map {|n| Ludoc.to_pts(n)} if layout.units == :inches
-      @box = {x: tmp[0], y: tmp[1], width: tmp[2], height: tmp[3]}
+      tmp = @element["box"].split(' ')
+      tmp = tmp.map {|n| Ludoc.to_pts(n)} if @units == :inches
+      @box = {x: tmp[0].to_f, y: tmp[1].to_f, width: tmp[2].to_f, height: tmp[3].to_f}
     end
 
     def x

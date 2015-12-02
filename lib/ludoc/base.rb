@@ -75,7 +75,7 @@ module Ludoc
       col = 0
 
       while input.size > 0 do
-        game_piece = GamePiece.new(layout, column_names, input.shift)
+        game_piece = GamePiece.new(column_names, input.shift, layout.count_column)
         game_piece.count.times do |index|
           render_piece(row, col, game_piece)
           col += 1

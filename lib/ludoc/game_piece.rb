@@ -1,23 +1,21 @@
 module Ludoc
   class GamePiece
-    attr_accessor :layout, :columns, :row
-
-    def initialize(layout, columns, row)
-      @layout = layout
+    def initialize(columns, row, count_column = nil)
       @columns = columns
       @row = row
+      @count_column = count_column
     end
 
     def count
-      if layout.count_column
-        column_value(layout.count_column).to_i
+      if !@count_column.nil?
+        column_value(@count_column).to_i
       else
         1
       end
     end
 
     def column_value(column)
-      row[columns.index(column)]
+      @row[@columns.index(column)]
     end
   end
 end

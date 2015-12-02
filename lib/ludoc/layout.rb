@@ -35,7 +35,7 @@ module Ludoc
     end
 
     def elements
-      @elements ||= layout["elements"].map {|el| Element.new(el, self)}
+      @elements ||= layout["elements"].map {|el| Element.new(el, units)}
     end
 
     private
