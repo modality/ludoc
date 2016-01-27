@@ -54,6 +54,26 @@ module Ludoc
                    height: el.height
     end
 
+    def box_element(el)
+      has_fill = false
+      has_stroke = false
+
+      if !el.fill_color.nil?
+        has_fill = true
+        pdf.fill_color el.fill_color
+      end
+
+      if !el.stroke_weight.nil?
+        has_stroke = true
+        pdf.line_width = el.stroke_weight
+        pdf.stroke_color = el.stroke_color
+      end
+
+      if !el.stroke_color.nil?
+        pdf.stroke_color = el.stroke_color
+      end
+    end
+
     def render_piece(row, col, game_piece)
       pos = [0 + col*layout.width, pdf.margin_box.height - row*layout.height]
       pdf.bounding_box(pos, {width: layout.width, height: layout.height}) do
@@ -61,7 +81,12 @@ module Ludoc
         pdf.stroke_bounds
         pdf.float do
           layout.elements.each do |el|
-            text_element(game_piece.column_value(el.column), el)
+            case el.type
+            when 'text'
+              text_element(game_piece.column_value(el.column), el)
+            when 'box'
+              box_element(el)
+            end
           end
         end
       end

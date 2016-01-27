@@ -39,5 +39,17 @@ module Ludoc
     def height
       box[:height]
     end
+
+    def stroke_weight
+      @units == :inches ? Ludoc.to_pts(@element["stroke_weight"].downcase.to_sym) : @element["stroke_weight"]
+    end
+
+    def stroke_color
+      @element["stroke_color"].downcase.to_sym
+    end
+
+    def fill_color
+      @element["fill_color"].downcase.to_sym
+    end
   end
 end

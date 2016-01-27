@@ -17,4 +17,9 @@ elements:
   - type: text
     align: center
     column: Description
-    box: 0.25" 1" 2" 2"
+    box: 0.25" 1.125" 1.75" 1.75"
+  - type: box
+    stroke_weight: 0.04"
+    stroke_color: 000000
+    fill_color: FFFFFF
+    box: 0.125" 1" 2" 2"
