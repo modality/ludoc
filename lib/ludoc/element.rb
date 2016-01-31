@@ -41,7 +41,10 @@ module Ludoc
     end
 
     def stroke_weight
-      @units == :inches ? Ludoc.to_pts(@element["stroke_weight"].downcase) : @element["stroke_weight"]
+      if !@element["stroke_weight"].nil?
+        return @units == :inches ? Ludoc.to_pts(@element["stroke_weight"].downcase) : @element["stroke_weight"]
+      end
+      return nil
     end
 
     def stroke_color

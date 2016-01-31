@@ -33,6 +33,7 @@ module Ludoc
 
       begin
         @input = CSV.read(File.expand_path(input_file))
+        @input_dir = File.dirname(File.expand_path(input_file))
       rescue
         bail "ERROR: Input `#{input_file}` is not a valid csv file"
       end
@@ -47,14 +48,43 @@ module Ludoc
     end
 
     def text_element(text, el)
+      has_fill, has_stroke = set_fill_stroke(el)
+
+      mode = :fill
+      if has_fill && has_stroke
+        mode = :fill_stroke
+      elsif has_stroke
+        mode = :stroke
+      end
+
       pdf.text_box text,
                    at: [el.x, pdf.bounds.height - el.y],
                    align: el.align,
                    width: el.width,
-                   height: el.height
+                   height: el.height,
+                   mode: mode
     end
 
     def box_element(el)
+      has_fill, has_stroke = set_fill_stroke(el)
+
+      if has_fill && has_stroke
+        pdf.fill_and_stroke_rectangle [el.x, pdf.bounds.height - el.y], el.width, el.height
+      elsif has_fill
+        pdf.fill_rectangle [el.x, pdf.bounds.height - el.y], el.width, el.height
+      elsif has_stroke
+        pdf.stroke_rectangle [el.x, pdf.bounds.height - el.y], el.width, el.height
+      end
+    end
+
+    def image_element(image, el)
+      pdf.image File.join(@input_dir, image),
+                at: [el.x, pdf.bounds.height - el.y],
+                width: el.width ? el.width : nil,
+                height: el.height ? el.height : nil
+    end
+
+    def set_fill_stroke(el)
       has_fill = false
       has_stroke = false
 
@@ -63,13 +93,13 @@ module Ludoc
         pdf.fill_color el.fill_color
       end
 
-      if !el.stroke_weight.nil?
+      if !(el.stroke_weight.nil? || el.stroke_color.nil?)
         has_stroke = true
         pdf.line_width el.stroke_weight
         pdf.stroke_color el.stroke_color
       end
 
-      pdf.fill_and_stroke_rectangle [el.x, pdf.bounds.height - el.y], el.width, el.height
+      return [has_fill, has_stroke]
     end
 
     def render_piece(row, col, game_piece)
@@ -86,6 +116,8 @@ module Ludoc
               text_element(game_piece.column_value(el.column), el)
             when 'box'
               box_element(el)
+            when 'image'
+              image_element(game_piece.column_value(el.column), el)
             end
             pdf.restore_graphics_state
           end

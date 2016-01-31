@@ -14,12 +14,15 @@ elements:
     align: right
     column: Cost
     box: 0.125" 0.125" 2.25" 0.25"
+  - type: image
+    box: 0.125" 1" 2.25" 2"
+    column: Picture
   - type: box
     stroke_weight: 0.04"
     stroke_color: "000000"
-    fill_color: "DDDDFF"
     box: 0.125" 1" 2.25" 2"
   - type: text
     align: center
     column: Description
+    fill_color: "FFFFFF"
     box: 0.25" 1.125" 2" 1.75"
