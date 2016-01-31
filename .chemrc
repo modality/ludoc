@@ -1,0 +1,4 @@
+---
+ludoc:
+- ./bin/ludoc -l=lib/layouts/playing_card.yml -i=data/test.csv -o=build/output.pdf
+- open build/output.pdf

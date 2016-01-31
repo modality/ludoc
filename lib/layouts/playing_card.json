@@ -1,0 +1,36 @@
+{
+  "units":        "inches",
+  "width":        "2.5",
+  "height":       "3.5",
+  "orientation":  "landscape",
+  "rows":         "2",
+  "columns":      "4",
+  "count_column": "Count",
+  "elements": [
+    {
+      "type": "text",
+      "align": "left",
+      "column": "Name",
+      "box": "0.125 0.125 2.25 0.25"
+    },
+    {
+      "type": "text",
+      "align": "right",
+      "column": "Cost",
+      "box": "0.125 0.125 2.25 0.25"
+    },
+    {
+      "type": "text",
+      "align": "center",
+      "column": "Description",
+      "box": "0.25 1.125 1.75 1.75"
+    },
+    {
+      "type": "box",
+      "stroke_weight": "0.04",
+      "stroke_color": "#000000",
+      "fill_color": "#FFFFFF",
+      "box": "0.125 1 2 2"
+    }
+  ]
+}

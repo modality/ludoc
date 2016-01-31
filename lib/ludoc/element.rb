@@ -41,15 +41,23 @@ module Ludoc
     end
 
     def stroke_weight
-      @units == :inches ? Ludoc.to_pts(@element["stroke_weight"].downcase.to_sym) : @element["stroke_weight"]
+      @units == :inches ? Ludoc.to_pts(@element["stroke_weight"].downcase) : @element["stroke_weight"]
     end
 
     def stroke_color
-      @element["stroke_color"].downcase.to_sym
+      get_color "stroke_color"
     end
 
     def fill_color
-      @element["fill_color"].downcase.to_sym
+      get_color "fill_color"
+    end
+
+    def get_color(key)
+      if @element[key] && @element[key].length > 0
+        @element[key].gsub(/^#/,'').downcase
+      else
+        nil
+      end
     end
   end
 end

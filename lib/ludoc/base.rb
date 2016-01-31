@@ -65,28 +65,29 @@ module Ludoc
 
       if !el.stroke_weight.nil?
         has_stroke = true
-        pdf.line_width = el.stroke_weight
-        pdf.stroke_color = el.stroke_color
+        pdf.line_width el.stroke_weight
+        pdf.stroke_color el.stroke_color
       end
 
-      if !el.stroke_color.nil?
-        pdf.stroke_color = el.stroke_color
-      end
+      pdf.fill_and_stroke_rectangle [el.x, pdf.bounds.height - el.y], el.width, el.height
     end
 
     def render_piece(row, col, game_piece)
       pos = [0 + col*layout.width, pdf.margin_box.height - row*layout.height]
       pdf.bounding_box(pos, {width: layout.width, height: layout.height}) do
         pdf.stroke_color 'CCCCCC'
+        pdf.line_width 1
         pdf.stroke_bounds
         pdf.float do
           layout.elements.each do |el|
+            pdf.save_graphics_state
             case el.type
             when 'text'
               text_element(game_piece.column_value(el.column), el)
             when 'box'
               box_element(el)
             end
+            pdf.restore_graphics_state
           end
         end
       end

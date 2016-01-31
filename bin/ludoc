@@ -1,12 +1,7 @@
 #!/usr/bin/env ruby
+$:.unshift File.join(File.dirname(__FILE__), '..', 'lib')
 
-begin
-  require 'ludoc'
-rescue LoadError
-  require 'rubygems'
-  require 'bundler/setup'
-  require 'ludoc'
-end
+require 'ludoc'
 
 args = Hash[ ARGV.flat_map{|s| s.scan(/--?([^=\s]+)(?:=(\S+))?/) } ]
 ludoc = Ludoc::Base.new args
